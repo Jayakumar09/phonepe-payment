@@ -211,6 +211,129 @@ button:disabled {
   box-shadow: none;
 }
 
+/* Bank Transfer Details Styles */
+.bank-details-section {
+  margin-top: 30px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.bank-details-section h2 {
+  color: #2d3748;
+  margin-bottom: 20px;
+}
+
+.bank-details-card {
+  background: white;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  max-width: 500px;
+  margin: 0 auto 20px;
+}
+
+.bank-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bank-info-row:last-child {
+  border-bottom: none;
+}
+
+.bank-label {
+  color: #718096;
+  font-weight: 500;
+  text-align: left;
+  flex: 1;
+}
+
+.bank-value {
+  color: #2d3748;
+  font-weight: 600;
+  text-align: right;
+  flex: 1;
+  font-family: monospace;
+}
+
+.bank-value.highlight {
+  color: #5a67d8;
+  font-size: 16px;
+}
+
+.bank-value.amount {
+  color: #38a169;
+  font-size: 20px;
+}
+
+.amount-row {
+  background: #f0fff4;
+  margin: 10px -25px -25px;
+  padding: 20px 25px;
+  border-radius: 0 0 16px 16px;
+  border-bottom: none;
+}
+
+.copy-btn {
+  background: #edf2f7;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 10px;
+  transition: background 0.2s;
+}
+
+.copy-btn:hover {
+  background: #e2e8f0;
+}
+
+.bank-instructions {
+  background: #ebf8ff;
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto 20px;
+  text-align: left;
+}
+
+.bank-instructions h4 {
+  color: #2b6cb0;
+  margin-bottom: 10px;
+}
+
+.bank-instructions ol {
+  color: #2c5282;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.bank-instructions li {
+  margin-bottom: 8px;
+}
+
+.bank-actions {
+  margin-top: 20px;
+}
+
+.back-btn {
+  background: #edf2f7;
+  color: #4a5568;
+  padding: 12px 25px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.back-btn:hover {
+  background: #e2e8f0;
+}
+
 /* Success Page Styles */
 .success-container {
   min-height: 100vh;

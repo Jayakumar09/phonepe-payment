@@ -42,25 +42,49 @@ const paymentModes = [
     icon: "🏦", 
     description: "All major banks" 
   },
+  { 
+    id: "BANK_TRANSFER", 
+    name: "Direct Bank Transfer", 
+    icon: "🏦", 
+    description: "Transfer directly to bank account",
+    isOffline: true
+  },
 ];
+
+// Bank details for direct transfer
+const bankDetails = {
+  accountHolderName: "Vijayalakshmi",
+  bankName: "State Bank of India (SBI)",
+  accountNumber: "42238903895",
+  ifscCode: "SBIN0064593",
+};
 
 const PlansPage = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [selectedPaymentMode, setSelectedPaymentMode] = useState("PAY_PAGE");
+  const [showBankDetails, setShowBankDetails] = useState(false);
 
   const handlePlanSelect = (planId) => {
     setSelectedPlan(planId);
+    setShowBankDetails(false);
   };
 
   const handlePaymentModeSelect = (modeId) => {
     setSelectedPaymentMode(modeId);
+    setShowBankDetails(false);
   };
 
   const handleSubscribe = async () => {
     if (!selectedPlan) {
       setErrorMsg("Please select a plan first.");
+      return;
+    }
+
+    // Handle Direct Bank Transfer
+    if (selectedPaymentMode === "BANK_TRANSFER") {
+      setShowBankDetails(true);
       return;
     }
 
@@ -166,7 +190,7 @@ const PlansPage = () => {
       )}
 
       {/* Subscribe Button */}
-      {selectedPlan && (
+      {selectedPlan && !showBankDetails && (
         <button
           className="subscribe-button"
           onClick={handleSubscribe}
@@ -174,6 +198,76 @@ const PlansPage = () => {
         >
           {loading ? "Processing..." : `Pay ₹${plans.find(p => p.id === selectedPlan)?.price}`}
         </button>
+      )}
+
+      {/* Bank Transfer Details */}
+      {showBankDetails && (
+        <div className="bank-details-section">
+          <h2>🏦 Direct Bank Transfer Details</h2>
+          <div className="bank-details-card">
+            <div className="bank-info-row">
+              <span className="bank-label">Account Holder Name</span>
+              <span className="bank-value">{bankDetails.accountHolderName}</span>
+              <button 
+                className="copy-btn"
+                onClick={() => navigator.clipboard.writeText(bankDetails.accountHolderName)}
+              >
+                📋 Copy
+              </button>
+            </div>
+            <div className="bank-info-row">
+              <span className="bank-label">Bank Name</span>
+              <span className="bank-value">{bankDetails.bankName}</span>
+              <button 
+                className="copy-btn"
+                onClick={() => navigator.clipboard.writeText(bankDetails.bankName)}
+              >
+                📋 Copy
+              </button>
+            </div>
+            <div className="bank-info-row">
+              <span className="bank-label">Account Number</span>
+              <span className="bank-value highlight">{bankDetails.accountNumber}</span>
+              <button 
+                className="copy-btn"
+                onClick={() => navigator.clipboard.writeText(bankDetails.accountNumber)}
+              >
+                📋 Copy
+              </button>
+            </div>
+            <div className="bank-info-row">
+              <span className="bank-label">IFSC Code</span>
+              <span className="bank-value highlight">{bankDetails.ifscCode}</span>
+              <button 
+                className="copy-btn"
+                onClick={() => navigator.clipboard.writeText(bankDetails.ifscCode)}
+              >
+                📋 Copy
+              </button>
+            </div>
+            <div className="bank-info-row amount-row">
+              <span className="bank-label">Amount to Transfer</span>
+              <span className="bank-value amount">₹ {plans.find(p => p.id === selectedPlan)?.price}</span>
+            </div>
+          </div>
+          <div className="bank-instructions">
+            <h4>📋 Instructions:</h4>
+            <ol>
+              <li>Transfer the exact amount to the bank account above</li>
+              <li>Save the transaction reference number</li>
+              <li>Your subscription will be activated within 24 hours after verification</li>
+              <li>For any queries, contact support with your transaction details</li>
+            </ol>
+          </div>
+          <div className="bank-actions">
+            <button 
+              className="back-btn"
+              onClick={() => setShowBankDetails(false)}
+            >
+              ← Choose Another Payment Method
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
