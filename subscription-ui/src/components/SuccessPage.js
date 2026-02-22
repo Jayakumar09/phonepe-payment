@@ -2,6 +2,20 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// Payment mode display names
+const paymentModeNames = {
+  "PAY_PAGE": "All Payment Methods",
+  "UPI": "UPI",
+  "CARD": "Card Payment",
+  "WALLET": "Wallet",
+  "NET_BANKING": "Net Banking",
+  "BANK_TRANSFER": "Direct Bank Transfer",
+};
+
+const getPaymentModeName = (mode) => {
+  return paymentModeNames[mode] || mode || "Online";
+};
+
 const SuccessPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -47,7 +61,7 @@ const SuccessPage = () => {
           transactionId: transactionId || "N/A",
           amount: amount ? `₹ ${(amount / 100).toFixed(2)}` : (orderData.amount ? `₹ ${orderData.amount}` : "N/A"),
           planName: orderData.planName || "Subscription",
-          paymentMode: orderData.paymentMode || paymentMode || "Online",
+          paymentMode: getPaymentModeName(orderData.paymentMode || paymentMode),
           state: state || "COMPLETED",
           code: code || "SUCCESS",
           message: message || "Payment successful",
@@ -85,7 +99,7 @@ const SuccessPage = () => {
             state: statusData.state || statusData.status || "COMPLETED",
             code: statusData.code || "SUCCESS",
             message: statusData.message || "Payment successful",
-            paymentMode: statusData.paymentMode || statusData.paymentDetails?.paymentMode || "Online",
+            paymentMode: getPaymentModeName(orderData.paymentMode || statusData.paymentMode || statusData.paymentDetails?.paymentMode),
             transactionStatus: statusData.status || "SUCCESS",
             date: new Date().toLocaleDateString("en-IN", {
               year: "numeric",
@@ -107,7 +121,7 @@ const SuccessPage = () => {
             state: "PROCESSING",
             code: "PENDING",
             message: "Payment is being verified. You will receive a confirmation shortly.",
-            paymentMode: "Online",
+            paymentMode: getPaymentModeName(orderData.paymentMode),
             transactionStatus: "PENDING",
             date: new Date().toLocaleDateString("en-IN", {
               year: "numeric",
@@ -131,7 +145,7 @@ const SuccessPage = () => {
         state: "INITIATED",
         code: "PENDING",
         message: "Payment initiated. Awaiting confirmation.",
-        paymentMode: "Online",
+        paymentMode: getPaymentModeName(orderData.paymentMode) || "Online",
         transactionStatus: "PENDING",
         date: new Date().toLocaleDateString("en-IN", {
           year: "numeric",
