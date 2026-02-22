@@ -2,9 +2,10 @@ import { createPhonePePayment, checkPaymentStatus } from "../services/phonepeSer
 
 export const initiatePayment = async (req, res) => {
   try {
-    const { plan } = req.body;
+    const { plan, paymentMode } = req.body;
 
     console.log("Received plan:", plan);
+    console.log("Received payment mode:", paymentMode);
 
     const plans = {
       BASIC: 199,
@@ -17,8 +18,9 @@ export const initiatePayment = async (req, res) => {
     }
 
     const amount = plans[plan];
+    const mode = paymentMode || "PAY_PAGE";
 
-    const paymentResponse = await createPhonePePayment(plan, amount);
+    const paymentResponse = await createPhonePePayment(plan, amount, mode);
 
     res.json(paymentResponse);
 

@@ -38,7 +38,7 @@ const getAccessToken = async () => {
 // ===============================
 // CREATE PAYMENT
 // ===============================
-export const createPhonePePayment = async (plan, amount) => {
+export const createPhonePePayment = async (plan, amount, paymentMode = "PAY_PAGE") => {
   try {
     if (!amount || isNaN(amount)) {
       throw new Error("Invalid amount passed to PhonePe");
@@ -46,21 +46,57 @@ export const createPhonePePayment = async (plan, amount) => {
 
     const accessToken = await getAccessToken();
 
+    // Build payment instrument based on selected mode
+    let paymentInstrument;
+    
+    switch (paymentMode) {
+      case "UPI":
+        paymentInstrument = {
+          type: "PAY_PAGE",
+        };
+        break;
+      case "CARD":
+        paymentInstrument = {
+          type: "PAY_PAGE",
+        };
+        break;
+      case "WALLET":
+        paymentInstrument = {
+          type: "PAY_PAGE",
+        };
+        break;
+      case "NET_BANKING":
+        paymentInstrument = {
+          type: "PAY_PAGE",
+        };
+        break;
+      case "UPI_INTENT":
+        paymentInstrument = {
+          type: "UPI_INTENT",
+        };
+        break;
+      case "PAY_PAGE":
+      default:
+        paymentInstrument = {
+          type: "PAY_PAGE",
+        };
+        break;
+    }
+
     const payload = {
-  merchantId: process.env.PHONEPE_MERCHANT_ID,
-  merchantOrderId: "ORD_" + Date.now(), // ✅ REQUIRED
-  merchantUserId: "USER_" + Date.now(),
-  amount: Number(amount) * 100,
-  redirectUrl: `${process.env.FRONTEND_URL}/success`,
-  redirectMode: "GET",
-  callbackUrl: `${process.env.BACKEND_URL}/api/payment/callback`,
-  mobileNumber: "9999999999",
-  paymentInstrument: {
-    type: "PAY_PAGE",
-  },
-};
+      merchantId: process.env.PHONEPE_MERCHANT_ID,
+      merchantOrderId: "ORD_" + Date.now(), // ✅ REQUIRED
+      merchantUserId: "USER_" + Date.now(),
+      amount: Number(amount) * 100,
+      redirectUrl: `${process.env.FRONTEND_URL}/success`,
+      redirectMode: "GET",
+      callbackUrl: `${process.env.BACKEND_URL}/api/payment/callback`,
+      mobileNumber: "9999999999",
+      paymentInstrument: paymentInstrument,
+    };
 
     console.log("🔥 PAYMENT PAYLOAD:", payload);
+    console.log("💳 Payment Mode:", paymentMode);
 
     const response = await axios.post(
       `${BASE_URL}/checkout/v2/pay`,

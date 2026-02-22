@@ -47,10 +47,10 @@ const SuccessPage = () => {
           transactionId: transactionId || "N/A",
           amount: amount ? `₹ ${(amount / 100).toFixed(2)}` : (orderData.amount ? `₹ ${orderData.amount}` : "N/A"),
           planName: orderData.planName || "Subscription",
+          paymentMode: orderData.paymentMode || paymentMode || "Online",
           state: state || "COMPLETED",
           code: code || "SUCCESS",
           message: message || "Payment successful",
-          paymentMode: paymentMode || "Online",
           transactionStatus: transactionStatus || "SUCCESS",
           date: new Date().toLocaleDateString("en-IN", {
             year: "numeric",
